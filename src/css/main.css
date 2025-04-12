@@ -1,0 +1,24 @@
+h1 {
+  font-family: "Coiny", system-ui;
+  font-size: 2.625rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.fact {
+  font-size: 1.25rem;
+  /* 1.4 is 140% of initial line height. */
+  line-height: 1.4;
+  font-family: "Sono", monospace;
+  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+}
+
+.tag {
+  font-family: "Coiny", system-ui;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+ul {
+  list-style: none;
+}

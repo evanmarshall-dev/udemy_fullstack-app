@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full-Stack Web App</title>
+    <!-- Google Fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom Styles. -->
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body>
+    <header>
+      <img
+        src="./assets/logo.png"
+        alt="Logo image of a chat bubble."
+        height="68"
+        width="68"
+      />
+      <h1>Full-Stack Web App</h1>
+      <button>Share a fact</button>
+    </header>
+    <form>
+      <input type="text" placeholder="Share a fact with the world." />
+      <span>200</span>
+      <input type="text" placeholder="Trustworthy source..." />
+      <select>
+        <option value="">Choose category:</option>
+        <option value="technology">Technology</option>
+        <option value="science">Science</option>
+      </select>
+      <button>Post</button>
+    </form>
+    <main>
+      <aside>
+        <ul>
+          <li>
+            <button>All</button>
+          </li>
+          <li>
+            <button>Technology</button>
+          </li>
+          <li>
+            <button>Science</button>
+          </li>
+        </ul>
+      </aside>
+      <section>
+        <ul>
+          <li>
+            <p class="fact">
+              React is being developed by Meta (formerly facebook)
+              <a
+                href="https://opensource.fb.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >(Source)</a
+              >
+              <span class="tag">#technology#</span>
+            </p>
+            <div>
+              <button>👍 <strong>24</strong></button>
+              <button>🤯 <strong>9</strong></button>
+              <button>⛔️ <strong>4</strong></button>
+            </div>
+          </li>
+          <li>
+            <p class="fact">
+              Millennial dads spend 3 times as much time with their kids than
+              their fathers spent with them. In 1982, 43% of fathers had never
+              changed a diaper. Today, that number is down to 3%
+              <a
+                href="https://www.mother.ly/parenting/millennial-dads-spend-more-time-with-their-kids"
+                target="_blank"
+                rel="noopener noreferrer"
+                >(Source)</a
+              >
+              <span class="tag">#society#</span>
+            </p>
+            <div>
+              <button>👍 <strong>15</strong></button>
+              <button>🤯 <strong>8</strong></button>
+              <button>⛔️ <strong>2</strong></button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
