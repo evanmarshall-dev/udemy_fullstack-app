@@ -1,24 +1,149 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #292524;
+  color: #fafaf9;
+  font-family: "Sono", monospace;
+  padding: 3rem 4rem;
+}
+
 h1 {
   font-family: "Coiny", system-ui;
   font-size: 2.625rem;
   text-transform: uppercase;
-  text-align: center;
-}
-
-.fact {
-  font-size: 1.25rem;
-  /* 1.4 is 140% of initial line height. */
-  line-height: 1.4;
-  font-family: "Sono", monospace;
-  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
-}
-
-.tag {
-  font-family: "Coiny", system-ui;
-  text-transform: uppercase;
-  font-size: 0.875rem;
+  /* text-align: center; */
+  /* color: #450a40; */
+  line-height: 1;
+  margin-top: 0.313rem;
 }
 
 ul {
   list-style: none;
+}
+
+.container {
+  max-width: 1500px;
+  margin: 0 auto;
+
+  & .btn {
+    border: none;
+    font-family: "Coiny", system-ui;
+    line-height: 1;
+    text-transform: uppercase;
+    font-size: 1.063rem;
+    padding: 1rem 0 0.813rem;
+    background-image: linear-gradient(
+      135deg,
+      #3b82f6,
+      #ef4444,
+      #16a34a,
+      #eab308
+    );
+    /* Inherit color defined on parent. */
+    color: inherit;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &.btn--large {
+      font-size: 1.25rem;
+      padding: 1.25rem 2rem 1.063rem;
+    }
+
+    &.btn--all {
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+
+    &.btn--category {
+      width: 100%;
+      background-image: none;
+    }
+
+    &:hover {
+      transform: scale(110%) rotate(-2deg);
+    }
+  }
+
+  & .header {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      & img {
+        width: 68px;
+        height: 68px;
+      }
+    }
+  }
+
+  & .fact-form {
+    background-color: #44403c;
+    margin-bottom: 2.5rem;
+    padding: 1rem 2.5rem;
+    text-align: center;
+  }
+
+  & .main {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+
+    & .category {
+      margin-bottom: 1rem;
+    }
+
+    & .fact {
+      font-size: 1.25rem;
+      /* 1.4 is 140% of initial line height. */
+      line-height: 1.4;
+      /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+      background-color: #44403c;
+      margin-bottom: 1rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      letter-spacing: -1px;
+
+      & .tag {
+        font-family: "Coiny", system-ui;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        padding: 0.188rem 0.625rem 0;
+        border-radius: 100px;
+      }
+
+      & .vote-buttons {
+        /* A trick to provide margin needed to left to push content to the end of flexbox. */
+        margin-left: auto;
+      }
+
+      & .source {
+        /* Link targets any .source selector with href value. */
+        &:link,
+        &:visited {
+          color: #a8a29e;
+          text-decoration: none;
+          margin-left: 0.75rem;
+          transition: 0.3s;
+        }
+
+        &:hover,
+        &:active {
+          color: #3b82f6;
+        }
+      }
+    }
+  }
 }
