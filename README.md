@@ -7,4 +7,4 @@
 ![REACT](https://img.shields.io/badge/react-red?style=plastic)
 ![CSS](https://img.shields.io/badge/css-blue?style=plastic)
 
-## Section: CSS - App Styling
+## Supabase: Storing App Data
