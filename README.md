@@ -90,3 +90,19 @@ Now for modifying data.
 4. Rename **Policy Name** to **_Enable update access for all users_**.
 5. Write `true` within `with check ();`.
 6. Click **Save Policy**.
+
+## JavaScript: Making the App Interactive
+
+JavaScript (JS) is the _programming_ language of the browser. It is used to implement _dynamic_ effects such as response to click events, loading external data, changing HTML content, playing video, animating charts, etc.
+
+### Show/Hide the Form
+
+1. Create a style for class `hidden` to display none with important.
+2. Apply this class to the form element.
+3. In the JS we select the element using `document.querySelector('btn-open');`. Select the button for **_Share A Fact_**. Store this in a variable called `btn`.
+4. Attach an **event handler** to a click event on the above button. We do this by the `addEventListener` method with the event type in parenthesis (`"click"`) and a callback function which will define what happens on a click event (`btn.addEventListener("click", function () {}`).
+5. Select the form then add an **if statement** within the callback function. The if statement should be checking if the form `classList` has `hidden` then we run the function within the statement (`if (form.classList.contains("hidden")) {}`).
+6. If it contains `hidden` then we want to remove the `hidden` class (`form.classList.remove("hidden");`).
+7. The second part of the if statement will be to add the class of `hidden` back to the form if its `classList` does not contain hidden already (`else {form.classList.add("hidden");}`).
+8. When we remove the hidden class we want to change the button content to **_CLOSE_**. This is done using the `textContent` method (`btn.textContent = "Close";`).
+9. Now on click the text content remains CLOSE, so we repeat the above code in the else statement and apply the original text back (`btn.textContent = "Share a fact";`).
