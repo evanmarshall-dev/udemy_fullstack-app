@@ -152,3 +152,31 @@ console.log(`The age of the fact is ${age1} years old.`);
 // You can also call the function directly in a console log and you can continue to call the function.
 console.log(`The age of the fact is ${calcFactAge(2020)} years old.`);
 ```
+
+### If/Else Statements and Truthy/Falsey Values
+
+Falsey are any values that are converted to `false` in something such as an if statement. Since an if statement is a boolean true or false.
+
+The falsey values are: `0`, `''`, `null`, `undefined`.
+
+Truthy values are everything else.
+
+Now we will utilize truthy/falsey and if/else statements in our app. If a user enters an argument for `calcFactAge` that is in the future we want to indicate that. We can do this by comparing `currentYear` with the `inputted` year or we can see if the `age` is greater than 0 or not.
+
+For example:
+
+```javascript
+// Run code if inputted year is greater than current year.
+// If the statement is only one line of code you can remove the curly braces in the code block.
+function calcFactAge(year) {
+  const age = new Date().getFullYear() - year;
+
+  if (age >= 0) {
+    return age;
+  } else {
+    return "You entered a year in the future.";
+  }
+}
+
+console.log(calcFactAge(2037));
+```
