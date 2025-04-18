@@ -180,3 +180,19 @@ function calcFactAge(year) {
 
 console.log(calcFactAge(2037));
 ```
+
+### Arrow Functions
+
+Arrow functions are a shorthand way of writing functions. They are also _anonymous_ functions, meaning they do not have a name.
+
+For example:
+
+```javascript
+// For single line arrow functions you can remove the curly braces and the return statement.
+const calcFactAge2 = (year) => {
+  const age = new Date().getFullYear() - year;
+  return age >= 0
+    ? age
+    : `Error: You entered a year in the future. Years need to be less than or equal to ${new Date().getFullYear()}.`;
+};
+```
