@@ -196,3 +196,68 @@ const calcFactAge2 = (year) => {
     : `Error: You entered a year in the future. Years need to be less than or equal to ${new Date().getFullYear()}.`;
 };
 ```
+
+### Arrays
+
+An array is a data structure that allows you to store multiple values in a single variable. You can create an array using square brackets `[]` and separate the values with commas.
+
+For example:
+
+```javascript
+// Arrays are zero indexed, so the first element is 0.
+// If you call on an array value that doesn't exist it will return UNDEFINED.
+const fact = ["Lisbon is the capital of Portugal.", 2015, true, "something"];
+console.log(fact);
+console.log(fact[2]); // true
+console.log(fact.length); // 4
+console.log(fact[fact.length - 1]); // something
+
+// Create variables from the array.
+const [text, createdIn, isCorrect, something] = fact;
+console.log(text); // Lisbon is the capital of Portugal.
+
+// Add elements to an array by creating a new array.
+// If we were to just add in the original array and an additional value it would not work. We want to add a value to the end of the array.
+const newFact = [fact, "something new"];
+console.log(newFact); // [Array(4), "something new"]
+
+// To do it properly we need to use the spread operator.
+const newFact2 = [...fact, "something new"];
+console.log(newFact2); // ["Lisbon is the capital of Portugal.", 2015, true, "something", "something new"]
+```
+
+### Objects
+
+An object is a data structure that allows you to store multiple values in a single variable. You can create an object using curly braces `{}` and separate the key-value pairs with commas.
+
+For example:
+
+```javascript
+const factObj = {
+  text: "Lisbon is the capital of Portugal.",
+  category: "society",
+  createdIn: 2015,
+  isCorrect: true,
+  something: "something",
+  // You can also add a function to an object. This is called a method and is assembled from values in the object.
+  // The THIS keyword refers to the object itself.
+  createSummary: function () {
+    return `The fact "${
+      this.text
+    }", it is from the category ${this.category.toUpperCase()}, created in ${
+      this.createdIn
+    }, and it is ${this.isCorrect}.`;
+  },
+};
+
+console.log(factObj.text); // Lisbon is the capital of Portugal.
+// You can also use the bracket notation.
+console.log(factObj["text"]); // Lisbon is the capital of Portugal.
+
+// Create variables from the object through DESTRUCTURING.
+const { text, createdIn } = factObj;
+console.log(text); // Lisbon is the capital of Portugal.
+
+// Create our own method.
+console.log(factObj.createSummary()); // The fact Lisbon is the capital of Portugal., it is from the category SOCIETY, created in 2015, and it is true.
+```
