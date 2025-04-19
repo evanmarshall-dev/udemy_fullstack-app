@@ -341,3 +341,21 @@ console.log(text); // Lisbon is the capital of Portugal.
 // Create our own method.
 console.log(factObj.createSummary()); // The fact Lisbon is the capital of Portugal., it is from the category SOCIETY, created in 2015, and it is true.
 ```
+
+### Document Object Model (DOM)
+
+The DOM is a programming interface for HTML and XML documents. It represents the document as a tree structure where each HTML element or **_node_** is an **_object_** representing a part of the document. The DOM allows you to manipulate the document structure, style, and content through JS methods (DOM manipulation).
+
+When you `console.dir()` an element you will see the properties of the element. These properties are the same as the ones you can manipulate in the DOM. For example, `textContent`, `innerHTML`, `classList`, etc. You can also expand to see the methods of the element. These methods are the same as the ones you can use to manipulate the element in the DOM. For example, `addEventListener()`, `remove()`, `appendChild()`, etc.
+
+For example:
+
+```javascript
+console.log(btn); // <button class="btn-open">Share a fact</button>
+console.dir(btn); // <button class="btn-open">Share a fact</button>`
+
+// The factsList will be used to create new DOM elements.
+const factsList = document.querySelector(".facts-list");
+```
+
+We do not manipulate the HTML, but rather the DOM, which is a JS representation of the HTML. We place the factsList code outside of the function so that it will run at page load.
