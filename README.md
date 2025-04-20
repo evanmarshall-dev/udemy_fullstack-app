@@ -359,3 +359,49 @@ const factsList = document.querySelector(".facts-list");
 ```
 
 We do not manipulate the HTML, but rather the DOM, which is a JS representation of the HTML. We place the factsList code outside of the function so that it will run at page load.
+
+#### Creating DOM Elements
+
+Use `factsList.insertAdjacentHTML("afterbegin", "<li>Test Content</li>");` and pass in the position and text content as _arguments_. `Afterbegin` means it will be inserted at the beginning of the list. You can also use `beforeend` to insert at the end of the list.
+
+When we receive data from a database we won't be able to use the `insertAdjacentHTML` method anymore because we will not know how many items users have inputted. Therefore we will have to loop over the entire array using `map` method and for each object we will create some HTML, group the HTML together, and then insert it into the DOM. This creates a brand new array of HTML.
+
+1. Clear any HTML that is inside the `factsList` element on page load. `factsList.innerHTML = "";`.
+2. Map over the `initialFacts` array and create a new array of HTML strings.
+3. Use the `join` method to create a single string of HTML.
+4. Use the `insertAdjacentHTML` method to insert the HTML into the DOM.
+5. Refactor the code by creating a function. This will make the function **_independent_** of where the data source is. We do not want to continue calling on `initialFacts` array. We want the function to be **_reusable_** and use both data from the inline array as well as the Supabase database.
+6. Pass in `dataArray` to `createFactsList` function and `dataArray.map()` instead of `initialFacts.map()`.
+7. Call the function (Can be called before the function in the code) with the `initialFacts` array as an argument.
+
+For example:
+
+```javascript
+factsList.innerHTML = "";
+
+createFactsList(initialFacts);
+
+function createFactsList(dataArray) {
+  const htmlArr = dataArray.map(
+    (fact) => /* HTML */ `<li class="fact">
+      <p>
+        ${fact.text}
+        <a
+          class="source"
+          href="${fact.source}"
+          target="_blank"
+          rel="noopener noreferrer"
+          >(Source)</a
+        >
+      </p>
+      <span class="tag" style="background-color: #3b82f6"
+        >${fact.category}</span
+      >
+    </li>`
+  );
+
+  const html = htmlArr.join("");
+
+  factsList.insertAdjacentHTML("afterbegin", html);
+}
+```
