@@ -377,6 +377,8 @@ When we receive data from a database we won't be able to use the `insertAdjacent
 For example:
 
 ```javascript
+const factsList = document.querySelector(".facts-list");
+
 factsList.innerHTML = "";
 
 createFactsList(initialFacts);
