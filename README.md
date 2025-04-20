@@ -407,3 +407,21 @@ function createFactsList(dataArray) {
   factsList.insertAdjacentHTML("afterbegin", html);
 }
 ```
+
+### Fetch from Supabase with Async/Await
+
+Make sure you have "enable read access for all users" under **Policies** in the **Authentication** section of the Supabase dashboard.
+
+1. Create a fetch function which grabs the database URL as the first argument and an object of options as the second argument.
+2. In the second argument we add `headers` which will contain the `apikey` and `Authorization` (Bearer token). The bearer token is the same as the API key with the `Bearer` keyword in front of it.
+3. Assign fetch to a variable called `response` (i.e. res).
+
+The response from the fetch is a `Promise`. A `Promise` is a future value. It is necessary because the data takes some time to load. The data is not received immediately after page load.
+
+The Promise is either **_fulfilled_** or **_rejected_**. We need to consume the `Promise` so that we have our code waiting for the result to arrive. This is done by creating an **_asynchronous_** function (async). The async function requires no arguments and we add the `const res` to the code body. Once the `res` code is within the `async` function we can use the `await` keyword for fetch. Await pauses the execution of the code while it is fetching. Await can only be used when a function returns a `Promise`.
+
+1. We then call the function `loadFacts()` which creates a response in the console.
+2. Transform the response into JSON. We do this by creating a variable called `data` and assigning it to the `res.json()` method. This is also a Promise so we need to use the `await` keyword again. It converts the response object into a JSON object.
+3. We can now use the data in the `createFactsList` function. We do this by calling the function and passing in the `data` variable as an argument.
+
+We now have a full stack app that fetches facts from Supabase and displays them on the page. The facts are dynamically rendered in the DOM based on the data retrieved from the database.

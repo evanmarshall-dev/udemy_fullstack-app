@@ -52,10 +52,40 @@ const factsList = document.querySelector(".facts-list");
 // We want to remove the content of the factsList by setting the innerHTML to an empty string.
 // The code outside of the function will run when the page loads.
 // Create DOM elements: Render facts in list.
+// Fetch grabs data from the API. The first argument is the URL and the second is an object with options.
 factsList.innerHTML = "";
 
+// Load data from Supabase.
+// Call the below function.
+loadFacts();
+
+async function loadFacts() {
+  const res = await fetch(
+    "https://vjqattpnvbkwmblbunop.supabase.co/rest/v1/facts",
+    {
+      // First pass in the headers object.
+      headers: {
+        apikey:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqcWF0dHBudmJrd21ibGJ1bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2NzMzMzIsImV4cCI6MjA2MDI0OTMzMn0.b559b80udtLGKfhX-9V1D1F4N5ZSqvAAUs8F4ZjF9G0",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqcWF0dHBudmJrd21ibGJ1bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2NzMzMzIsImV4cCI6MjA2MDI0OTMzMn0.b559b80udtLGKfhX-9V1D1F4N5ZSqvAAUs8F4ZjF9G0",
+      },
+    }
+  );
+  // Test.
+  // ? console.log(res);
+
+  const data = await res.json();
+
+  // Test.
+  // ? console.log(data);
+
+  // Call the createFactsList function and pass in the data array.
+  createFactsList(data);
+}
+
 // Call the create function and pass in the initialFacts array.
-createFactsList(initialFacts);
+// ? createFactsList(initialFacts);
 
 // Create a function to contain the below code.
 function createFactsList(dataArray) {
