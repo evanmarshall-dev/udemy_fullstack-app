@@ -139,6 +139,8 @@ btn.addEventListener("click", function () {
   }
 });
 
+console.log([7, 64, 6, -23, 11].filter((el) => el > 10)); // [64, 11]
+
 // Create a function that will calculate the age of a fact.
 // ? function calcFactAge(year) {
 // ? const currentYear = 2022;

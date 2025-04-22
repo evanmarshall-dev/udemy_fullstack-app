@@ -425,3 +425,9 @@ The Promise is either **_fulfilled_** or **_rejected_**. We need to consume the 
 3. We can now use the data in the `createFactsList` function. We do this by calling the function and passing in the `data` variable as an argument.
 
 We now have a full stack app that fetches facts from Supabase and displays them on the page. The facts are dynamically rendered in the DOM based on the data retrieved from the database.
+
+### Filter and Finds Methods
+
+The `filter` method is similar to the `map` method where it loops over an array, but does it in a different way. For each element in the array it checks if the element meets a certain condition (i.e. true or false and only if true it will be included in the final array). So the `filter` method creates a new array with elements that meet the condition.
+
+We pass in a callback function to the `filter` method. The callback function takes each element of the array and matches it against a condition.
