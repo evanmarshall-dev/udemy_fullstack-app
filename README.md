@@ -428,6 +428,78 @@ We now have a full stack app that fetches facts from Supabase and displays them 
 
 ### Filter and Finds Methods
 
+#### Filter
+
 The `filter` method is similar to the `map` method where it loops over an array, but does it in a different way. For each element in the array it checks if the element meets a certain condition (i.e. true or false and only if true it will be included in the final array). So the `filter` method creates a new array with elements that meet the condition.
 
 We pass in a callback function to the `filter` method. The callback function takes each element of the array and matches it against a condition.
+
+We will utilize the `filter` method in the `loadFacts` function. We will filter the data we get from the API. The `data` that we get from the API is the array of objects. We will apply the filter to the `data`. Each object in the array (can be seen by `console.log(data)`) contains a `category` property. We will only display the objects where the category is equal to a specific category.
+
+For example:
+
+```javascript
+async function loadFacts() {
+  // Apply a filter to the data array.
+  // Call each of the array elements fact.
+  // Only if the category is equal to society will it be included in the new filteredData array.
+  // You can change the category to any of the other categories to filter by that category.
+  const filteredData = data.filter((fact) => fact.category === "society");
+
+  // Test.
+  // ? console.log(data);
+
+  // Call the createFactsList function and pass in the data array.
+  // ? createFactsList(data);
+  // Load filtered data instead of the full data.
+  createFactsList(filteredData);
+}
+```
+
+#### Find
+
+The `find` method is similar to the `filter` method, but it only returns the _first_ element that meets the condition. It **does not** create a new array like the `filter` method.
+
+The `find` method is useful when you want to find a specific element in an array. It returns the first element that meets the condition or `undefined` if no element meets the condition.
+
+For example:
+
+```javascript
+console.log([7, 64, 6, -23, 11].find((el) => el > 10)); // 64
+```
+
+#### Getting the Category Color
+
+For example:
+
+```javascript
+// The return below is an object with the name and color properties.
+// To get the color element from the object we use dot notation .color at the end of the find method.
+console.log(CATEGORIES.find((cat) => cat.name === "society").color); // {name: "society", color: "#eab308"}
+
+// Instead of hard coding the background color for category we can use the find method to get the color from the CATEGORIES array.
+const htmlArr = dataArray.map(
+  (fact) => /* HTML */ `<li class="fact">
+    <p>
+      ${fact.text}
+      <a
+        class="source"
+        href="${fact.source}"
+        target="_blank"
+        rel="noopener noreferrer"
+        >(Source)</a
+      >
+    </p>
+    <span
+      class="tag"
+      style="background-color: ${CATEGORIES.find(
+        (cat) => cat.name === fact.category
+      ).color}"
+    >
+      ${fact.category}</span
+    >
+  </li>`
+);
+```
+
+## React: Building the App

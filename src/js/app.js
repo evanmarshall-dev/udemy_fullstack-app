@@ -43,6 +43,10 @@ const CATEGORIES = [
   { name: "news", color: "#8b5cf6" },
 ];
 
+// The return below is an object with the name and color properties.
+// To get the color element from the object we use dot notation .color at the end of the find method.
+// ? console.log(CATEGORIES.find((cat) => cat.name === "society").color); // {name: "society", color: "#eab308"}
+
 // Variables & selecting DOM elements.
 const btn = document.querySelector(".btn-open");
 const form = document.querySelector(".fact-form");
@@ -77,11 +81,19 @@ async function loadFacts() {
 
   const data = await res.json();
 
+  // Apply a filter to the data array.
+  // Call each of the array elements fact.
+  // Only if the category is equal to society will it be included in the new filteredData array.
+  // You can change the category to any of the other categories to filter by that category.
+  // ? const filteredData = data.filter((fact) => fact.category === "society");
+
   // Test.
   // ? console.log(data);
 
   // Call the createFactsList function and pass in the data array.
   createFactsList(data);
+  // Load filtered data instead of the full data.
+  // ? createFactsList(filteredData);
 }
 
 // Call the create function and pass in the initialFacts array.
@@ -93,6 +105,7 @@ function createFactsList(dataArray) {
   // We pass in fact as an argument and return a string of HTML for each of the facts.
   // Inside the string we pass in fact.text which is the text value on the array.
   // ? const htmlArr = initialFacts.map(
+  // Instead of hard coding the background color for category we can use the find method to get the color from the CATEGORIES array.
   const htmlArr = dataArray.map(
     (fact) => /* HTML */ `<li class="fact">
       <p>
@@ -105,8 +118,13 @@ function createFactsList(dataArray) {
           >(Source)</a
         >
       </p>
-      <span class="tag" style="background-color: #3b82f6"
-        >${fact.category}</span
+      <span
+        class="tag"
+        style="background-color: ${CATEGORIES.find(
+          (cat) => cat.name === fact.category
+        ).color}"
+      >
+        ${fact.category}</span
       >
     </li>`
   );
@@ -140,6 +158,8 @@ btn.addEventListener("click", function () {
 });
 
 console.log([7, 64, 6, -23, 11].filter((el) => el > 10)); // [64, 11]
+
+console.log([7, 64, 6, -23, 11].find((el) => el > 10)); // 64
 
 // Create a function that will calculate the age of a fact.
 // ? function calcFactAge(year) {
