@@ -503,3 +503,19 @@ const htmlArr = dataArray.map(
 ```
 
 ## React: Building the App
+
+React is a JavaScript library for building user interfaces. It allows you to create reusable UI **_components_** and manage the state of your application. React is **_component-based_**, it is **_declarative_**, and driven by **_state_**.
+
+### Component-based
+
+A component is a JS function that returns a piece of the UI (Contains _content_ and _functionality_).
+
+### Declarative
+
+Components are built in a declarative way, which means that we only describe what the UI should look like using _JSX_ (JavaScript XML) and **not** how JS should create the UI. We never manipulate the DOM directly. React takes care of updating the DOM for us.
+
+### State
+
+React is driven by state. State is the _data_ that the UI is based on. When we change the state in a component, React automatically updates the UI/DOM to reflect the new state. This keeps the data and UI in **sync**. React makes the synchronization between the data and the UI very efficient versus vanilla JS.
+
+Libraries, such as React, also _enforce_ a less buggy way of writing application code.
