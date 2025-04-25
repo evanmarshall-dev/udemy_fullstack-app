@@ -529,3 +529,41 @@ Libraries, such as React, also _enforce_ a less buggy way of writing application
 5. Delete imports and everything in the `return` statement of the `App` function.
 6. Add an h1 element after the `return` statement with some text.
 7. Run `pnpm start` in the terminal to start the React app.
+
+### Structure of React Project
+
+React is built of JS _components_. You can add in HTML within the components called **_JSX_**.
+
+The only HTML within the structure of the app is the `index.html` within the public folder. The important part of the HTML is the `div` with the id of `root`. The entire application will be rendered within this `div`. Basically, React takes the DOM created by the components and _inject_ them into the `div` with the id of `root`.
+
+The `index.js` file is the entry point of the application. It is where the React app is rendered into the DOM. The `App.js` file is the main component of the application. It is where we will build our entire application.
+
+#### App.js
+
+We will copy the `header` element from `index.html` within v1 dir. Starting with a blank component we will add `function App` (Component names are capitalized). Paste in the `header` content within the return of the App component and make sure to `export default App`.
+
+Make sure all classes are changed to `className` since `class` is a reserved keyword in JS.
+
+It is also important to return only one element from the `return` statement. If you want to return multiple elements you can wrap them in a `div` or a `React.Fragment`. A `React.Fragment` is a special component that does not create an additional DOM element. It is used to group multiple elements without adding an extra node to the DOM.
+
+Paste the images into the `public` folder and start by pasting the `main.css` into the `src` folder.
+
+Any external links such as Google Fonts will be pasted in the index.html file within the public folder of the React app.
+
+For example:
+
+```jsx
+function App() {
+  return (
+    <header class="header">
+      <div class="logo">
+        <img src="./assets/logo.png" alt="Logo image of a chat bubble." />
+        <h1>Full-Stack Web App</h1>
+      </div>
+      <button class="btn btn--large btn-open">Share a fact</button>
+    </header>
+  );
+}
+
+export default App;
+```
