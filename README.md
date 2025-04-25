@@ -519,3 +519,13 @@ Components are built in a declarative way, which means that we only describe wha
 React is driven by state. State is the _data_ that the UI is based on. When we change the state in a component, React automatically updates the UI/DOM to reflect the new state. This keeps the data and UI in **sync**. React makes the synchronization between the data and the UI very efficient versus vanilla JS.
 
 Libraries, such as React, also _enforce_ a less buggy way of writing application code.
+
+### Setup React Project
+
+1. `npx create-react-app project-name`
+2. Open `index.js` within the `src` folder.
+3. Delete the `reportWebVitals.js` import and the `reportWebVitals()` function call as well as CSS import and any comments in the `index.js` file.
+4. Open `App.js` within the `src` folder.
+5. Delete imports and everything in the `return` statement of the `App` function.
+6. Add an h1 element after the `return` statement with some text.
+7. Run `pnpm start` in the terminal to start the React app.
