@@ -567,3 +567,9 @@ function App() {
 
 export default App;
 ```
+
+### Components
+
+For now we will add the other components to the `App.js` file. Later we will create separate files for each component.
+
+1. Create `CategoryFilter()` function and return a placeholder within an `aside` for now.
