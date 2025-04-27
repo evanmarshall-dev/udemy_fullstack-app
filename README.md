@@ -573,3 +573,9 @@ export default App;
 For now we will add the other components to the `App.js` file. Later we will create separate files for each component.
 
 1. Create `CategoryFilter()` function and return a placeholder within an `aside` for now.
+2. Create `FactsList()` function and return a placeholder within `section` for now.
+3. Wrap the components in the `App()` component in `main` element.
+
+Because `App()` is a function we can create more functionality within it (i.e. variables and states).
+
+Each component within the `App()` can be reused and even inside the **_child_** components as well.
