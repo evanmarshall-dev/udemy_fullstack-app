@@ -652,3 +652,16 @@ Let us now list out how many facts are in the list. `<p>There are {facts.length}
 
 > [!NOTE]
 > In the vanilla JS app we wrap the whole app in a `div` with class of `container`. In React the whole app is wrapped in the `div` with id of `root`. So let's update the CSS to reflect this.
+
+### Rendering List of Categories
+
+1. Copy one of the `li` elements from `v1/index.html` for the category buttons.
+2. Update class to className and inline styles to `style={{backgroundColor: "#000000"}}`.
+
+We want to render a list of buttons for each category in the `CATEGORIES` array.
+
+1. First we create a `CATEGORIES.map()` method to map over the array and return a button for each category.
+2. For now, we paste the `li` from before within the map and we get the technology button for each of the categories in the array.
+3. We need to now get the data from `cat` by adding curly braces (`{cat.name}`) in place of Technology text. Also we change the hardcoded color to `cat.color`.
+4. Now add in _All_ categories `li` from `v1/index.html`.
+5. Add key prop to each `li`. Both the name and color from the `CATEGORIES` array are unique so we can use either one as the key.
