@@ -637,3 +637,18 @@ function FactsList() {
   );
 }
 ```
+
+### Props
+
+Create a component for the facts called `Fact()`. Within this component we will add the full `li` element from the `FactsList` component. Now within the FactsList component we can simply pass in the new Fact component as `<Fact />`.
+
+We now have an issue with the `fact` being passed into the `li` element. It was coming from the variable `facts` and the **mapping** of fact in the `FactsList` component. In vanilla JS we would simply pass fact into the function as an argument. In React we can pass in fact as a **_prop_** to pass data from one component to another.
+
+In the `<Fact />` component we pass in `factObj={fact}` as a prop. Now we need to receive the `factObj` data inside the `Fact` component. We do not put in `factObj`, but instead we pass in `props`. You will see in the console that `factObj` will show as it is the prop passed in.
+
+Now within the li element we can pass in `props.factObj.text`, `props.factObj.source`, etc. to get the data from the prop. We can also destructure the `props` object to make it cleaner. Destructure inside the function parameters by passing in `({ factObj })` and then we can use `factObj.text`, etc. without the `props` keyword. Also make sure to move the key prop to the `Fact` component as well.
+
+Let us now list out how many facts are in the list. `<p>There are {facts.length} facts in the database.</p>`.
+
+> [!NOTE]
+> In the vanilla JS app we wrap the whole app in a `div` with class of `container`. In React the whole app is wrapped in the `div` with id of `root`. So let's update the CSS to reflect this.

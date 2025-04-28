@@ -33,7 +33,8 @@ ul {
   display: none !important;
 }
 
-.container {
+/* Changed since the main div that wraps app is root. */
+#root {
   max-width: 1500px;
   margin: 0 auto;
 }
