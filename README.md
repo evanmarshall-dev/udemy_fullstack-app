@@ -579,3 +579,61 @@ For now we will add the other components to the `App.js` file. Later we will cre
 Because `App()` is a function we can create more functionality within it (i.e. variables and states).
 
 Each component within the `App()` can be reused and even inside the **_child_** components as well.
+
+### List of Facts
+
+1. Copy over the CATEGORIES and initialFacts arrays from the v1 dir to the `App.js` file.
+2. Create a new variable called `facts` and assign it to the `initialFacts` array. This will be within the FactsList component. This will be temporary until we connect to the Supabase database.
+3. We then create an unordered list inside the FactsList section. We copy over `facts-list` ul from v1 `index.html`.
+4. Inside the `ul` we want to create an `li` for each fact in the array. With vanilla JS we used a map to loop over each object in the array and outputted **HTML**. In React we will use the `map` method to loop over the array and return a new array of **JSX** elements. In React we load JSX inside curly braces by `facts.map()` to loop over the facts array and return an `li` for each fact. In vanilla JS we had to use a string template literal to create the HTML, join the HTML, and manually enter it into the DOM using `insertAdjacentHTML`. In React we can use JSX to create the HTML directly in the return statement.
+5. Replace `<li>Fact</li>` with one of the li elements from the v1 `index.html`.
+6. Instead of inline styles, in React we write the style declaration inside curly braces. Then we need to provide an object with the style properties (another curly braces). Lastly, we change `background-color` to `backgroundColor` and put the hex value in a string.
+7. Now dynamically load `fact.text`, `fact.source`, and `fact.votes...` into the JSX.
+8. For fact.category we will use the `find` method to get the color from the CATEGORIES array. We will use the `fact.category` to find the category object in the CATEGORIES array and then get the color property from that object. You do not need the `${}` because we are already in JS curly braces.
+9. We need to give each of the elements inside the map a unique name or key. We do this by specifying the id from the fact object as the key. This is important for React to keep track of the elements and update them correctly.
+
+For example:
+
+```jsx
+function FactsList() {
+  // temporary variable. Only used until we have the real data from Supabase.
+  const facts = initialFacts;
+
+  return (
+    <section>
+      <ul className="facts-list">
+        {facts.map((fact) => (
+          <li className="fact" key={fact.id}>
+            <p>
+              {fact.text}
+              <a
+                className="source"
+                href={fact.source}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                (Source)
+              </a>
+            </p>
+            <span
+              className="tag"
+              style={{
+                backgroundColor: CATEGORIES.find(
+                  (cat) => cat.name === fact.category
+                ).color,
+              }}
+            >
+              {fact.category}
+            </span>
+            <div className="vote-buttons">
+              <button>👍 {fact.votesInteresting}</button>
+              <button>🤯 {fact.votesMindblowing}</button>
+              <button>⛔️ {fact.votesFalse}</button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+```
