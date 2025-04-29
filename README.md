@@ -665,3 +665,33 @@ We want to render a list of buttons for each category in the `CATEGORIES` array.
 3. We need to now get the data from `cat` by adding curly braces (`{cat.name}`) in place of Technology text. Also we change the hardcoded color to `cat.color`.
 4. Now add in _All_ categories `li` from `v1/index.html`.
 5. Add key prop to each `li`. Both the name and color from the `CATEGORIES` array are unique so we can use either one as the key.
+
+### React State
+
+Classic example of state is a counter.
+
+1. Create a functional component called `Counter()`.
+2. return `div` with number and `button` to increment the number.
+3. Include the `Counter()` component in the App component.
+
+How do we handle the button click in React? In Vanilla JS we would add an event listener to the button. In React we can use the `onClick` prop to add an event handler to the button. We pass in a function that will be called when the button is clicked (Other examples are onMouseOver, onMouseOut, onChange, etc.).
+
+1. Add the `onClick` prop to the button and pass in a `console.log` for now to log click.
+
+Now we will add the functionality to increment the number on button click. In vanilla JS we would most likely select the span element and change the text content of it. In React this is when we would use **_state_**. The `useState` hook comes from the React library so we have to import it. If you console log `useState` you will see that it returns an array with the initial state of `0` then `f`. the `f` is a function we can use to update the state.
+
+1. Initiate state by adding `useState(0)` to the Counter function/component and pass in an initial value of 0. Store the `useState` value in a variable.
+2. Since `useState` is an array we will _destructure_ it to `count` and `setCount`.
+3. Replace the number in the span to the count value (The count value is whatever we set in the useState parameter).
+4. Now replace the console log in the button to the `setCount()` function. Whatever is passed into the `setCount` function will become the new value of `count`.
+5. In order to increment by one we will have to pass in a callback function to `setCount`. The callback has the argument of the current `count` and a return of the current count plus one (Current count can be any label such as `c`).
+
+> [!NOTE]
+> Updating the count state will re-render the entire component so React will call the `Counter` function again.
+> This means the JSX will be regenerated and returned again.
+
+By executing the function over and over is why we call React **_declarative_**.
+
+For example, know that we want the `count` to be 4, but we never tell React how we get that value of 4. We update the state and React takes care of the rest.
+
+We do not need to manually update the DOM like we did in vanilla JS. Vanilla JS is **_imperative_** and requires explicit instructions on how to update the DOM and manage changes.

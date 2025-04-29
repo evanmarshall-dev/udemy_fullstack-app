@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./main.css";
 
 const initialFacts = [
@@ -34,6 +35,26 @@ const initialFacts = [
   },
 ];
 
+// Counter example to demo state.
+function Counter() {
+  // ? const x = useState(0);
+  const [count, setCount] = useState(0);
+  // ? console.log(x);
+
+  return (
+    <div>
+      {/* <span style={{ fontSize: "40px" }}>8</span> */}
+      <span style={{ fontSize: "2.5rem", marginRight: "1rem" }}>{count}</span>
+      {/* <button className="btn btn--large" onClick={() => console.log("Clicked")}>
+        +1
+      </button> */}
+      <button className="btn btn--large" onClick={() => setCount((c) => c + 1)}>
+        +1
+      </button>
+    </div>
+  );
+}
+
 function App() {
   const appTitle = "Full-Stack Web App";
 
@@ -54,6 +75,7 @@ function App() {
         <button className="btn btn--large btn-open">Share a fact</button>
       </header>
 
+      <Counter />
       <NewFactForm />
 
       <main className="main">
