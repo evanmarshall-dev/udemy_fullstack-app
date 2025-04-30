@@ -695,3 +695,28 @@ By executing the function over and over is why we call React **_declarative_**.
 For example, know that we want the `count` to be 4, but we never tell React how we get that value of 4. We update the state and React takes care of the rest.
 
 We do not need to manually update the DOM like we did in vanilla JS. Vanilla JS is **_imperative_** and requires explicit instructions on how to update the DOM and manage changes.
+
+### Toggle Display of Fact Form
+
+1. Create a state variable in the `App()` component. Variable destructure `showForm` and `setShowForm` equal to `useState` with default value of `false` so we do _not_ show the form.
+2. Now we use the ternary operator to render the form based on a condition. If `showForm` is true, render the form component; otherwise, render a button to show the form. If `showForm` is `true` then we want `NewFactForm`, but if not true then we want nothing or `null`. Now the form defaults to not showing.
+3. To show the form we need to add an `onClick` event to the "share a fact" button. Set `onClick` to a anonymous function that will call `setShowForm` to true. This will show the form when the button is clicked.
+4. The issue now is that we are only setting the state to true. We need to read the current state by setting a callback function with `show` as the parameter and returning the **_not operator_** for show (The illogical operator `!` returns the opposite value of `show` or the boolean). Therefore on each button click true becomes false and false becomes true.
+
+The **three** parts of using state are:
+
+1. to _define_ the state variable (`const [showForm, setShowForm] = useState(false);`).
+2. _Use_ state variable (`{showForm ? <NewFactForm /> : null}`).
+3. `Update` state variable (`onClick={() => setShowForm((show) => !show)}`).
+
+### Create the Header Component
+
+1. Move the header element out of `App()` component and into its own component called `Header()`.
+2. We cannot move the `setShowForm` into the new `Header()` component because it is needed in the `App()` component as well so not in the same scope because `Header()` is a **_child_** component. Therefore we pass the `setShowForm` into the `<Header />` component call in `App()` as a prop. We can call the prop anything but we need to call the `setShowForm` function within the prop.
+3. Now we can bring in the `setShowForm` prop into the `Header()` component. If we named the prop something different we would have to make sure the same name is used in the `Header()` component (We will call it `ssFormObj` to specify).
+
+We want to have the form button change to close when the form is open so we need to not only pass in the `setShowForm` function but also the `showForm` state variable. This will allow us to check if the form is open or not.
+
+1. We will accomplish the above **_conditionally_**. We do this by giving `<Header />` access to `showForm` as well as a prop again (called `show`).
+2. Pass in `show` as a prop to `Header()` component so that we can set the text of the "share a fact" button **_conditionally_**.
+3. Now we replace the "share a fact" text with the conditional operator. If `show` is true then we want the text to be "Close" and if not true then we want the text to be "Share a fact".

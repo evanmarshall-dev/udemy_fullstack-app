@@ -36,53 +36,73 @@ const initialFacts = [
 ];
 
 // Counter example to demo state.
-function Counter() {
-  // ? const x = useState(0);
-  const [count, setCount] = useState(0);
-  // ? console.log(x);
+// ? function Counter() {
+//   // ? const x = useState(0);
+// // const [state variable, state updater function] = useState(initialValue);
+//   ? const [count, setCount] = useState(0);
+//   // ? console.log(x);
 
-  return (
-    <div>
-      {/* <span style={{ fontSize: "40px" }}>8</span> */}
-      <span style={{ fontSize: "2.5rem", marginRight: "1rem" }}>{count}</span>
-      {/* <button className="btn btn--large" onClick={() => console.log("Clicked")}>
-        +1
-      </button> */}
-      <button className="btn btn--large" onClick={() => setCount((c) => c + 1)}>
-        +1
-      </button>
-    </div>
-  );
-}
+//   ? return (
+//     ? <div>
+//       {/* <span style={{ fontSize: "40px" }}>8</span> */}
+//       ? <span style={{ fontSize: "2.5rem", marginRight: "1rem" }}>{count}</span>
+//       {/* <button className="btn btn--large" onClick={() => console.log("Clicked")}>
+//         +1
+//       </button> */}
+//       ? <button className="btn btn--large" onClick={() => setCount((c) => c + 1)}>
+//         ? +1
+//       ? </button>
+//     ? </div>
+//   ? );
+// ? }
 
 function App() {
-  const appTitle = "Full-Stack Web App";
+  // const [state variable, state updater function] = useState(initialValue);
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <>
-      {/* HEADER */}
-      <header className="header">
-        <div className="logo">
-          <img
-            src="logo.png"
-            alt="Logo of a chat bubble."
-            height={68}
-            width={68}
-          />
-          {/* <h1>Full-Stack Web App</h1> */}
-          <h1>{appTitle}</h1>
-        </div>
-        <button className="btn btn--large btn-open">Share a fact</button>
-      </header>
+      <Header show={showForm} ssFormObj={setShowForm} />
 
-      <Counter />
-      <NewFactForm />
+      {showForm ? <NewFactForm /> : null}
+      {/* <Counter /> */}
+      {/* <NewFactForm /> */}
 
       <main className="main">
         <CategoryFilter />
         <FactsList />
       </main>
     </>
+  );
+}
+
+function Header({ show, ssFormObj }) {
+  const appTitle = "Full-Stack Web App";
+
+  return (
+    <header className="header">
+      <div className="logo">
+        <img
+          src="logo.png"
+          alt="Logo of a chat bubble."
+          height={68}
+          width={68}
+        />
+        {/* <h1>Full-Stack Web App</h1> */}
+        <h1>{appTitle}</h1>
+      </div>
+      {/* <button
+          className="btn btn--large btn-open"
+          onClick={() => setShowForm(true)}
+        > */}
+      <button
+        className="btn btn--large btn-open"
+        onClick={() => ssFormObj((show) => !show)}
+      >
+        {/* Share a fact */}
+        {show ? "Close" : "Share a fact"}
+      </button>
+    </header>
   );
 }
 
