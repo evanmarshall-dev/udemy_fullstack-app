@@ -720,3 +720,24 @@ We want to have the form button change to close when the form is open so we need
 1. We will accomplish the above **_conditionally_**. We do this by giving `<Header />` access to `showForm` as well as a prop again (called `show`).
 2. Pass in `show` as a prop to `Header()` component so that we can set the text of the "share a fact" button **_conditionally_**.
 3. Now we replace the "share a fact" text with the conditional operator. If `show` is true then we want the text to be "Close" and if not true then we want the text to be "Share a fact".
+
+### React Forms
+
+1. Take the form elements from v1 `index.html` and paste them into the `NewFactForm()` component.
+2. Use the category array data so we do not have to keep the hard-coded select options. We will loop over the array and create an option for each category. We will use `CATEGORIES.map()` to loop over the array and return an option element. The value of the option will be `cat.name`. Within the option we will have the text as `cat.name.toUpperCase()`.
+3. Add a key to the option element and use `cat.name`.
+
+When dealing with forms in React, React wants to be in complete control of the input values.
+
+1. Create a new piece of state called `text` and the set function called `setText`, which we get from `useState` with an initial value of an **empty string**. We use the `text` as the value for the first input field.
+2. Specify the value of the first input field as `text` or the **state variable**. Whatever is set as the initial state will show as the value in the text input field.
+3. To handle the state in the first input field we need an event handler. Instead of `onClick` event handler we will use `onChange`.
+4. The function specified in the event handler will run each time the input value changes. The argument passed into said function will be an **event object** (`e`).
+5. Set the new text state to `e.target.value`.
+
+Each time the input changes the function `{(e) => setText(e.target.value)}` will be called. The function will be called with an event object (`e`). The event contains `e.target` or the target property which is the current element. So on the _current element_ we can read the `value` property (Value is what is being written).
+
+We then take that `value` add it to the new state variable `text`, which will reload/re-render the entire component, `text` is different and the new value will be shown in the input field. Now React is in complete control of the input field, which is why we call it a **_controlled component_** or controlled input field. Now when we need to do something with this data we have it available in the app.
+
+> [!NOTE]
+> The new state can be seen using React Dev Tools (Chrome) when we click on the `NewFactForm` component in the component tree.
