@@ -741,3 +741,19 @@ We then take that `value` add it to the new state variable `text`, which will re
 
 > [!NOTE]
 > The new state can be seen using React Dev Tools (Chrome) when we click on the `NewFactForm` component in the component tree.
+
+Now we will repeat the same process for the sources input field and categories select element.
+
+Now we want to dynamically decrease the character count from 200 as we type in the text input field. We want the field text to be replaced with 200 minus the length of the text. We do not need another state variable for this. We only need to create a normal variable.
+
+1. Create variable called `textLength` and set it equal to `text.length`. The text in text.length comes from the state variable. Each time we type the `setText` function is called and the text state is updated. The `textLength` variable will always be up to date with the current length of the text.
+
+We can react to the submit event when a user clicks the submit button.
+
+1. Add an `onSubmit` event handler to the form element. The function will be called when the form is submitted.
+2. Create a separate function called `handleSubmit` to be called within the `onSubmit` event since it will take many lines of code. This function will receive the event object as an argument.
+3. Prevent default functionality by adding `e.preventDefault()` to the `handleSubmit()` function.
+4. Add `handleSubmit` function to the `onSubmit` event handler. Do not add parenthesis because we will not be calling the function here, React will. Can also be called by `{() => handleSubmit()}` but that is not necessary.
+5. When the form is submitted we want to take the data from text, source, and category and create new posts and then add new posts to the list and rendered to the screen. We want to use another piece of state for the list of facts.
+
+### Adding New Facts to the List

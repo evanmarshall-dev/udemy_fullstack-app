@@ -119,18 +119,33 @@ const CATEGORIES = [
 
 function NewFactForm() {
   const [text, setText] = useState("");
+  const [source, setSource] = useState("");
+  const [category, setCategory] = useState("");
+  const textLength = text.length;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Check if working by logging all state variables.
+    // ? console.log(text, source, category);
+  }
 
   return (
-    <form className="fact-form">
+    <form className="fact-form" onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Share a fact with the world."
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <span>200</span>
-      <input type="text" placeholder="Trustworthy source..." />
-      <select>
+      {/* <span>200</span> */}
+      <span>{200 - textLength}</span>
+      <input
+        value={source}
+        type="text"
+        placeholder="Trustworthy source..."
+        onChange={(e) => setSource(e.target.value)}
+      />
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">Choose category:</option>
         {/* <option value="technology">Technology</option>
         <option value="science">Science</option> */}
