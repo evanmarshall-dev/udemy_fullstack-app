@@ -757,3 +757,63 @@ We can react to the submit event when a user clicks the submit button.
 5. When the form is submitted we want to take the data from text, source, and category and create new posts and then add new posts to the list and rendered to the screen. We want to use another piece of state for the list of facts.
 
 ### Adding New Facts to the List
+
+We have falsey values in JS, which are values that are false in conditions such as an if statement. One of the falsey values is an empty string. Check if the text state variable is an empty string (nothing typed into the input field) and we also need to do the same checks for source and category fields. We check for each of the fields by adding `&&` to the if statement to check if all fields are truthy.
+
+We also want to check that the length of the text is less than 200 characters. We check this by adding `&& textLength >= 200` to the if statement.
+
+We also need to check that it is valid data such that the source data is a valid URL. We can use the `URL` constructor to check if the source is a valid URL. If it is not a valid URL we will throw an error. This will need to utilize a `try/catch` block and have to be outside the component so that it does not re-render the component. We then replace source from the `handleSubmit` if statement with the `isValidHttpUrl` function and pass it the source state variable. Update the useState default value to an example URL to help assist user.
+
+Make sure to wrap all of the remaining `handleSubmit` code in the if statement so that it only runs if all of the checks are true.
+
+#### The isValidHttpUrl is a utility function checks whether a given string is a valid HTTP or HTTPS URL. It does this by
+
+1. The function takes a single parameter `url`, which is the string to be checked.
+2. It then attempts to create a URL object using the url parameter. If the string is not a valid URL, the constructor will throw an error which is caught in the `catch` block.
+3. If an error occurs during the creation of the URL object, the function returns false which indicates the input is not a valid URL.
+4. If the URL object is successfully created, the function checks whether the protocol of the URL is either `http:` or `https:`. If the protocol matches, the function returns true, otherwise it returns false.
+
+```jsx
+function isValidHttpUrl(url) {
+  let urlObj;
+
+  try {
+    urlObj = new URL(url);
+  } catch (err) {
+    return false;
+  }
+  return urlObj.protocol === "http:" || urlObj.protocol === "https:";
+}
+```
+
+Now we will create a `newFact` object so that we can add it to the facts array. It needs to look like the objects in the `initialFacts` array.
+
+1. Copy one of the objects from the `initialFacts` array and paste it into the `handleSubmit` function.
+2. Make sure you dynamically add year using `new Date().getFullYear()` to the `createdIn` property and start with 0 `votes`.
+3. The text property should be equal to the `text` state variable (When this happens you can remove the key value and just have it written as `text`).
+4. Do the same for `source` and `category`.
+5. For `id` do `Math.round(Math.random() * 1000000)` to get a random number between 0 and 1000000. This will be the id of the new fact. This is not ideal for a real app where we will get IDs from supabase.
+
+Create a new piece of state to add fact to UI. Now it is time to replace `const facts = initialFacts;` within the `FactsList` component.
+
+1. Replace the `facts` variable in `FactsList` component with `const [facts, setFacts] = useState(initialFacts)`. This allows us to be able to update initial facts and the UI will auto update.
+2. We also need the state from `FactsList` in the `NewFactForm` component. This is because in order to add a new fact, we will need access to the `setFacts` function. We do this by placing it within app which is the parent of both components.
+3. Pass `facts` and `setFacts` as props. First add `factsObj={facts}` to the `FactsList` component call within `App` then destructure `factsObj` in the `FactsList` component.
+4. We now need the `setFacts` function inside of the form using `setFactsObj` equal to `setFacts`.
+5. Destructure `setFactsObj` in the `NewFactForm` component.
+
+One component uses the state (`FactsList`) and the other component updates the state (`NewFactForm`).
+
+Now we can update the state within the `handleSubmit` function.
+
+1. Add `setFactsObject` to the `handleSubmit` function.
+2. Determine what the new state should be (What is passed into `setFactsObj()`). What we want as the new state is the current state plus whatever we get from `newFact` added to it.
+3. The above is done by using a callback function to set previous state to new state. We return an array to the callback function (cb). Within the array it should include `newFact` plus the **spread operator** to be used to take of all elements from a previous fact array and place them back into the new array.
+
+Now we need to **reset** the values remaining in the form. We will use the `setText`, `setSource`, and `setCategory` variables again by setting them to empty strings. This will ensure that the form is cleared after submission, allowing the user to enter a new fact without any previous data lingering in the input fields.
+
+Now we will **close** the form. We have done this before by using the `setShowForm` state. We will set the state to false. When set to false `null` will be rendered (See header component). So in order to do this we need to give access to the function that updates the state:
+
+1. We (`{showForm...}` we add `setShowFormObj={setShowForm}`) to the form.
+2. Destructure `setShowFormObj` in the `NewFactForm` component parameter.
+3. Add setShowFormObj to the `handleSubmit` function and set to false.

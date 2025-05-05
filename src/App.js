@@ -59,18 +59,22 @@ const initialFacts = [
 function App() {
   // const [state variable, state updater function] = useState(initialValue);
   const [showForm, setShowForm] = useState(false);
+  // Moved from the FactsList component.
+  const [facts, setFacts] = useState(initialFacts);
 
   return (
     <>
       <Header show={showForm} ssFormObj={setShowForm} />
 
-      {showForm ? <NewFactForm /> : null}
+      {showForm ? (
+        <NewFactForm setFactsObj={setFacts} setShowFormObj={setShowForm} />
+      ) : null}
       {/* <Counter /> */}
       {/* <NewFactForm /> */}
 
       <main className="main">
         <CategoryFilter />
-        <FactsList />
+        <FactsList factsObj={facts} />
       </main>
     </>
   );
@@ -117,16 +121,60 @@ const CATEGORIES = [
   { name: "news", color: "#8b5cf6" },
 ];
 
-function NewFactForm() {
+function isValidHttpUrl(url) {
+  let urlObj;
+
+  try {
+    urlObj = new URL(url);
+  } catch (err) {
+    return false;
+  }
+  return urlObj.protocol === "http:" || urlObj.protocol === "https:";
+}
+
+function NewFactForm({ setFactsObj, setShowFormObj }) {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("");
+  const [source, setSource] = useState("https://www.example.com");
   const [category, setCategory] = useState("");
   const textLength = text.length;
 
   function handleSubmit(e) {
+    // 1. Prevent the browser reload.
     e.preventDefault();
     // Check if working by logging all state variables.
     // ? console.log(text, source, category);
+
+    // 2. Check if the data is valid. Check to see if text, source, and category are not empty. If so, create a new fact.
+    // ? if (text && source && category && textLength <= 200) {
+    //   ? console.log("There is valid data!");
+    // ? }
+    if (text && isValidHttpUrl(source) && category && textLength <= 200) {
+      // ? console.log("There is valid data!");
+
+      // 3. Create a new fact object similar to the fact objects that are already in the array.
+      const newFact = {
+        id: Math.round(Math.random() * 1000000),
+        // text: text,
+        text,
+        source,
+        category,
+        votesInteresting: 0,
+        votesMindblowing: 0,
+        votesFalse: 0,
+        createdIn: new Date().getFullYear(),
+      };
+
+      // 4. Add the new fact to the user interface (UI): Add the fact to state since that is the only way the UI can be reloaded so that the new fact will show up.
+      setFactsObj((facts) => [newFact, ...facts]);
+
+      // 5. Reset the inout fields back to empty strings.
+      setText("");
+      setSource("");
+      setCategory("");
+
+      // 6. Close the form.
+      setShowFormObj(false);
+    }
   }
 
   return (
@@ -184,18 +232,20 @@ function CategoryFilter() {
   );
 }
 
-function FactsList() {
+// Could write props as parameter and within the function destructure it, but instead we will destructure it directly in the function parameter as factsObj.
+function FactsList({ factsObj }) {
   // temporary variable. Only used until we have the real data from Supabase.
-  const facts = initialFacts;
+  // ? const facts = initialFacts;
+  // ? const [facts, setFacts] = useState(initialFacts);
 
   return (
     <section>
       <ul className="facts-list">
-        {facts.map((fact) => (
+        {factsObj.map((fact) => (
           <Fact key={fact.id} factObj={fact} />
         ))}
       </ul>
-      <p>There are {facts.length} facts in the database. Add your own!</p>
+      <p>There are {factsObj.length} facts in the database. Add your own!</p>
     </section>
   );
 }
