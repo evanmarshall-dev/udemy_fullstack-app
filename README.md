@@ -817,3 +817,34 @@ Now we will **close** the form. We have done this before by using the `setShowFo
 1. We (`{showForm...}` we add `setShowFormObj={setShowForm}`) to the form.
 2. Destructure `setShowFormObj` in the `NewFactForm` component parameter.
 3. Add setShowFormObj to the `handleSubmit` function and set to false.
+
+### Loading Data from Supabase
+
+In vanilla JS we loaded the Supabase data using a `fetch` request. We will now get this data using the Supabase library:
+
+1. Install the Supabase library using `pnpm add @supabase/supabase-js`.
+2. Use the installed library to create a Supabase _client_. This will allow us to easily filter or order the data. Create `supabase.js` within the `src` folder.
+3. Copy and paste the create client code from Supabase API documentation into the `supabase.js` file.
+4. In order to create the client we need the _Supabase URL_ and _Supabase Key_. You can find the API key in **project settings** in Supabase.
+5. Give the app access to the client data by exporting the client from the `supabase.js` file (`export default supabase`).
+6. Now import supabase into the `App.js` file.
+7. We will fetch the data in the app component because that is where we have the `facts` state. The data we will load from Supabase will be stored inside the `facts` state. Instead of the current `initialFacts` array we will use the data from Supabase. We want to fetch this data as soon as the app renders for the first time (As soon as app loads) however we do not want to fetch again when the app re-renders. This is done by using the `useEffect` hook.
+8. Add `useEffect()` in the app component. It takes a function as the first argument and an empty array as the second argument. The empty array means that the function will only run once when the component mounts (The **_dependency array_**).
+9. Copy the SELECT ID snippet from _Supabase API docs_ > _facts_ and paste it inside the `useEffect` function to fetch the data.
+10. Create an `async` function within the `useEffect` hook called `getFacts` and put the code from Step #9 inside the function.
+11. Update the variable from let to constant and log the data to the console (Data is called facts). If you look at the code snippet from Supabase you will see that we are destructuring `data` into `facts` and `error` and then renaming that data into `facts`.
+12. Now we need to call the function `getFacts()`. You will now see the console log with the data showing only the IDs since that is all we specified in the code snippet.
+
+#### What does the Supabase client actually do?
+
+First, we import `supabase` (This is seen after `await` in the `getFacts` function) from the supabase.js file. On that Supabase client we can call some methods (i.e. `from` and `select` which come from Supabase library).
+
+We are taking from the facts array (`supabase.from("facts")`) and selecting `id`. In order to get all data and not just ID we can replace this code with asterisks.
+
+We use the `useEffect` function to run the `getFacts` function every time the component loads for the **_first_** time.
+
+1. Now instead of placing the data in the console we will place it in the app using the `facts` state.
+2. Get rid of `initialFacts` in the facts `useState` and replace with an empty array.
+3. Replace the console log in getFacts function with `setFacts(facts)` to set the state to the data we get from Supabase.
+
+We can emulate the data grab by going the the **network** tab in dev console and setting a slow network speed.
