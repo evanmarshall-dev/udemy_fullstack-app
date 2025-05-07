@@ -921,3 +921,60 @@ If we simulate an error by changing the `supabaseUrl` for example, we will see a
 We only want to call `setFacts()` within the `useEffect()` function if there is no error. If there is an error we want to inform the user of it. We will use an **_if/else_** statement.
 
 1. We will use if inequality operator for error (`if(!error)`) and render `setFacts()` if no error. Then we use `else` to alert that there was a problem with the data fetch. In real life we would use a modal or toast notification or some other special component on error.
+
+### Filter Facts by Category
+
+This functionality will change how we query the Supabase database via the Supabase client. We can add `.eq("category", "technology")` to the `getFacts` function to filter by specified category.
+
+We want to have the category filter applied based on which category button is clicked. We know that on those button clicks the UI is reloaded so we will need to use **_state_**. The new state variable will store which button was clicked. We need said state within the `useEffect` function therefore we need it defined within the `App` component.
+
+1. Create new state variable called `currentCategory` and setter function called `setCurrentCategory`. These will be equal to `useState` which has the initial value of **_all_**.
+
+We need to set the category when we click the buttons so we need to get the setter function (`setCurrentCategory`) to the buttons.
+
+The buttons are inside the `CategoryFilter` component. We need to pass that setter function to the component (`<CategoryFilter setCurrentCatObj={setCurrentCategory} />`). Now inside the category filter we need to accept the above prop passed into it (`function CategoryFilter({setCurrentCatObj}) {}`).
+
+1. Add the setter function prop to all of the buttons in the `CategoryFilter` component. This is done by adding `onClick` to each button with a callback function passed in. The callback function will call the `setCurrentCatObj` and set it to all (For the `all` button, which is the default state).
+2. We copy the above on click with callback function to the list of categories button below, but instead of passing all we need to pass in the clicked button which comes from `cat.name` (`onClick={() => setCurrentCatObj(cat.name)}`).
+
+> [!NOTE]
+> You can test for the different states in React Dev Tools (RDT) in Chrome when you click the buttons.
+> Click the App in Components list then click one of the category buttons in UI and you will see the category change in RDT.
+
+Now we will use the state value (`currentCategory`) where we query the data (`getFacts` function). We will do this by creating the current query in multiple parts. The query is essentially an object we can build overtime and in the end we can await the result.
+
+1. Create variable called `query` and set it equal to `supabase.from("facts").select("*")`. This is the first part of the query which we will always need.
+2. Then we add an if statement to the query stating that if `currentCategory` is not equal to _all_ then we set `query` variable to query with the category filter. We do this by adding `.eq("category", currentCategory)` to the query variable.
+3. Change `await supabase` to `await query` and remove what we built into the query variable (i.e. `.from`, `.select`, etc.).
+
+Let's recap:
+
+1. Stored the result of selecting all of the columns from the table we want into the query variable. We are not loading any data at this point, but just building the query.
+2. In case the current category is not all (Therefore one of the other categories in the list) then we only want to load the facts that have the selected category.
+3. We add to the query object (Set in the first part of building the query) the `.eq()` method to filter the data by category.
+4. We add the query to the `await` and add the remaining query items (i.e. `.order` and `.limit`).
+5. Only when we have `await` is when we do the data fetching itself.
+
+We currently will not see the functionality work yet because within the `useEffect` function the code only loads once when the app loads. Now we want to also load the data as soon as we click one of the category buttons or as soon as the `currentCategory` state changes.
+
+1. Add currentCategory to the **_dependency array_** of the `useEffect` function (The empty square brackets). This will cause the `useEffect` function to run again when the `currentCategory` state changes.
+
+#### Display a different message when there are no facts belonging to a selected category
+
+Go to the component that displays the facts list (`FactsList`) and add an if statement to check if there are no facts (`factsObj.length === 0`) then return a paragraph with the message "**No facts available for this category currently. Please select a different category or create a fact for this category.**" Otherwise, render the list of facts.
+
+For example:
+
+```javascript
+if (factsObj.length === 0) {
+  return (
+    <p className="message">
+      No facts available for this category currently. Please select a different
+      category or create a fact for this category.
+    </p>
+  );
+}
+```
+
+> [!NOTE]
+> Not necessary to do an `if/else` above because in JS if there is a return then the rest of the code is not executed. We want to execute the remaining code in the FactsList component.

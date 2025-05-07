@@ -64,26 +64,39 @@ function App() {
   // const [facts, setFacts] = useState(initialFacts);
   const [facts, setFacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState("all");
 
-  useEffect(function () {
-    async function getFacts() {
-      setIsLoading(true);
-      const { data: facts, error } = await supabase
-        .from("facts")
-        .select("*")
-        // .order("text", { ascending: true });
-        .order("votes_interesting", { ascending: false })
-        .limit(5);
-      // ? console.log(facts);
-      // ? console.log(error); // Will log null if there is no error.
-      if (!error) setFacts(facts);
-      else alert("There was an error getting the facts from the database.");
+  useEffect(
+    function () {
+      async function getFacts() {
+        setIsLoading(true);
 
-      setFacts(facts);
-      setIsLoading(false);
-    }
-    getFacts();
-  }, []);
+        let query = supabase.from("facts").select("*");
+
+        if (currentCategory !== "all")
+          query = query.eq("category", currentCategory);
+
+        // ? const { data: facts, error } = await supabase
+        const { data: facts, error } = await query
+          // ? .from("facts")
+          // ? .select("*")
+          // ? .eq("category", "technology")
+          // .order("text", { ascending: true });
+          .order("votes_interesting", { ascending: false })
+          .limit(10);
+        // ? console.log(facts);
+        // ? console.log(error); // Will log null if there is no error.
+        if (!error) setFacts(facts);
+        else alert("There was an error getting the facts from the database.");
+
+        setFacts(facts);
+        setIsLoading(false);
+      }
+      getFacts();
+      // ? }, []);
+    },
+    [currentCategory]
+  );
 
   return (
     <>
@@ -96,7 +109,7 @@ function App() {
       {/* <NewFactForm /> */}
 
       <main className="main">
-        <CategoryFilter />
+        <CategoryFilter setCurrentCatObj={setCurrentCategory} />
 
         {isLoading ? <Loader /> : <FactsList factsObj={facts} />}
 
@@ -238,12 +251,17 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
   );
 }
 
-function CategoryFilter() {
+function CategoryFilter({ setCurrentCatObj }) {
   return (
     <aside>
       <ul>
         <li className="category">
-          <button className="btn btn--all">All</button>
+          <button
+            className="btn btn--all"
+            onClick={() => setCurrentCatObj("all")}
+          >
+            All
+          </button>
         </li>
 
         {CATEGORIES.map((cat) => (
@@ -251,6 +269,7 @@ function CategoryFilter() {
             <button
               className="btn btn--category"
               style={{ backgroundColor: cat.color }}
+              onClick={() => setCurrentCatObj(cat.name)}
             >
               {/* Technology */}
               {cat.name}
@@ -267,6 +286,13 @@ function FactsList({ factsObj }) {
   // temporary variable. Only used until we have the real data from Supabase.
   // ? const facts = initialFacts;
   // ? const [facts, setFacts] = useState(initialFacts);
+  if (factsObj.length === 0)
+    return (
+      <p className="message">
+        No facts available for this category currently. Please select a
+        different category or create a fact for this category 👍
+      </p>
+    );
 
   return (
     <section>
@@ -319,9 +345,9 @@ function Fact({ factObj }) {
         {factObj.category}
       </span>
       <div className="vote-buttons">
-        <button>👍 {factObj.votesInteresting}</button>
-        <button>🤯 {factObj.votesMindblowing}</button>
-        <button>⛔️ {factObj.votesFalse}</button>
+        <button>👍 {factObj.votes_interesting}</button>
+        <button>🤯 {factObj.votes_mindblowing}</button>
+        <button>⛔️ {factObj.votes_false}</button>
       </div>
     </li>
   );
