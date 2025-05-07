@@ -33,6 +33,15 @@ ul {
   display: none !important;
 }
 
+/* Styles for loader component message. */
+.message {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: 24px;
+}
+
 /* Changed since the main div that wraps app is root. */
 #root {
   max-width: 1500px;

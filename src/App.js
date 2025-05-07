@@ -63,12 +63,24 @@ function App() {
   // Moved from the FactsList component.
   // const [facts, setFacts] = useState(initialFacts);
   const [facts, setFacts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(function () {
     async function getFacts() {
-      const { data: facts, error } = await supabase.from("facts").select("*");
+      setIsLoading(true);
+      const { data: facts, error } = await supabase
+        .from("facts")
+        .select("*")
+        // .order("text", { ascending: true });
+        .order("votes_interesting", { ascending: false })
+        .limit(5);
       // ? console.log(facts);
+      // ? console.log(error); // Will log null if there is no error.
+      if (!error) setFacts(facts);
+      else alert("There was an error getting the facts from the database.");
+
       setFacts(facts);
+      setIsLoading(false);
     }
     getFacts();
   }, []);
@@ -85,10 +97,17 @@ function App() {
 
       <main className="main">
         <CategoryFilter />
-        <FactsList factsObj={facts} />
+
+        {isLoading ? <Loader /> : <FactsList factsObj={facts} />}
+
+        {/* <FactsList factsObj={facts} /> */}
       </main>
     </>
   );
+}
+
+function Loader() {
+  return <p className="message">Loading...</p>;
 }
 
 function Header({ show, ssFormObj }) {
@@ -256,7 +275,10 @@ function FactsList({ factsObj }) {
           <Fact key={fact.id} factObj={fact} />
         ))}
       </ul>
-      <p>There are {factsObj.length} facts in the database. Add your own!</p>
+      <p>
+        There are {factsObj.length} facts loaded from the database. Add your
+        own!
+      </p>
     </section>
   );
 }

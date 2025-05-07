@@ -848,3 +848,76 @@ We use the `useEffect` function to run the `getFacts` function every time the co
 3. Replace the console log in getFacts function with `setFacts(facts)` to set the state to the data we get from Supabase.
 
 We can emulate the data grab by going the the **network** tab in dev console and setting a slow network speed.
+
+### Create Loader Component
+
+As soon as the app loads the data from Supabase takes time to load. We want to show a loading spinner while the data is being fetched.
+
+We want to display the loader at the beginning and then change UI once data is loaded then we need to access state. Common practice is to create state variable called `isLoading` and setter function called `setIsLoading` using `useState`. The initial value of `isLoading` is set to false. We do not set `isLoading` to true until we start loading the data, which is in the `useEffect()` function.
+
+1. Set `isLoading` to true within the `useEffect` function right before we start to fetch the data (In the `getFacts()` function right before await keyword).
+
+We can now use the `isLoading` state variable to conditionally render the loader or the facts list. We will do this in the `FactsList` component. Similar to how we did `showForm` conditional to either show the form or null.
+
+1. Within the main element after `<CategoryFilter />` and `<FactsList />` we will check if `isLoading` is true. If it is true we will render the loader component. If it is not true we will render the `<CategoryFilter />`.
+
+We have yet to implement where the loading stops. To set the loading state back to false we add `setIsLoading(false)` after we set the facts state to the data we get from Supabase. This will stop the loading spinner and show the facts list. We add this lading state right after `setFacts(facts)` in the `getFacts()` function.
+
+So to break it down:
+
+1. When `getFacts()` is called and we indicate to React that we are loading.
+2. Loading component is displayed.
+3. Our data is fetched, the code will wait because async function.
+4. Once data arrives the facts are set (State is changed for the facts).
+5. Change the loading state to false.
+
+For example:
+
+```javascript
+function App() {
+  // ... PREVIOUS CODE
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(function () {
+    async function getFacts() {
+      setIsLoading(true);
+      const { data: facts, error } = await supabase.from("facts").select("*");
+      setFacts(facts);
+      setIsLoading(false);
+    }
+    getFacts();
+  }, []);
+
+  return (
+    <>
+      {/* OTHER CODE */}
+      <main className="main">
+        <CategoryFilter />
+        {isLoading ? <Loader /> : <FactsList factsObj={facts} />}
+      </main>
+    </>
+  );
+}
+
+function Loader() {
+  return <p>Loading...</p>;
+}
+```
+
+#### What else we can do with Supabase client
+
+1. We can choose the table from which we read (`.from("facts")`).
+2. We can select all of the columns from said table that we want (`.select("*")`).
+3. We can also order the results by text value ascending or descending (`.order("text", { ascending: true })`).
+4. We can also order the results by the number of votes they got for interesting (`.order("votes_interesting", { ascending: false })`).
+5. We can also limit the number of facts we render to the page. In the real world app we would implement pagination (`.limit(1000)`).
+
+#### Error handling with Supabase client
+
+For example, let's console log _facts_ and _error_ within the `getFacts()` function.
+
+If we simulate an error by changing the `supabaseUrl` for example, we will see an error message logged to the console and if we also log facts we will get a value of null for that.
+
+We only want to call `setFacts()` within the `useEffect()` function if there is no error. If there is an error we want to inform the user of it. We will use an **_if/else_** statement.
+
+1. We will use if inequality operator for error (`if(!error)`) and render `setFacts()` if no error. Then we use `else` to alert that there was a problem with the data fetch. In real life we would use a modal or toast notification or some other special component on error.
