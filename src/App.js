@@ -89,7 +89,7 @@ function App() {
         if (!error) setFacts(facts);
         else alert("There was an error getting the facts from the database.");
 
-        setFacts(facts);
+        // ? setFacts(facts);
         setIsLoading(false);
       }
       getFacts();
@@ -179,9 +179,10 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("https://www.example.com");
   const [category, setCategory] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const textLength = text.length;
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     // 1. Prevent the browser reload.
     e.preventDefault();
     // Check if working by logging all state variables.
@@ -195,20 +196,41 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
       // ? console.log("There is valid data!");
 
       // 3. Create a new fact object similar to the fact objects that are already in the array.
-      const newFact = {
-        id: Math.round(Math.random() * 1000000),
-        // text: text,
-        text,
-        source,
-        category,
-        votesInteresting: 0,
-        votesMindblowing: 0,
-        votesFalse: 0,
-        createdIn: new Date().getFullYear(),
-      };
+      // ? const newFact = {
+      //   ? id: Math.round(Math.random() * 1000000),
+      //   // text: text,
+      //   ? text,
+      //   ? source,
+      //   ? category,
+      //   ? votesInteresting: 0,
+      //   ? votesMindblowing: 0,
+      //   ? votesFalse: 0,
+      //   ? createdIn: new Date().getFullYear(),
+      // ? };
+
+      // New 3. Upload fact to Supabase and receive the new fact object.
+      setIsUploading(true);
+
+      const { data: newFact, error } = await supabase
+        .from("facts")
+        .insert([
+          {
+            text,
+            source,
+            category,
+          },
+        ])
+        .select();
+
+      setIsUploading(false);
+
+      // Test.
+      // ? console.log(newFact);
 
       // 4. Add the new fact to the user interface (UI): Add the fact to state since that is the only way the UI can be reloaded so that the new fact will show up.
-      setFactsObj((facts) => [newFact, ...facts]);
+      // ? setFactsObj((facts) => [newFact, ...facts]);
+      // ? setFactsObj((facts) => [newFact[0], ...facts]);
+      if (!error) setFactsObj((facts) => [newFact[0], ...facts]);
 
       // 5. Reset the inout fields back to empty strings.
       setText("");
@@ -227,6 +249,7 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
         placeholder="Share a fact with the world."
         value={text}
         onChange={(e) => setText(e.target.value)}
+        disabled={isUploading}
       />
       {/* <span>200</span> */}
       <span>{200 - textLength}</span>
@@ -235,8 +258,13 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
         type="text"
         placeholder="Trustworthy source..."
         onChange={(e) => setSource(e.target.value)}
+        disabled={isUploading}
       />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        disabled={isUploading}
+      >
         <option value="">Choose category:</option>
         {/* <option value="technology">Technology</option>
         <option value="science">Science</option> */}
@@ -246,7 +274,9 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
           </option>
         ))}
       </select>
-      <button className="btn btn--large">Post</button>
+      <button className="btn btn--large" disabled={isUploading}>
+        Post
+      </button>
     </form>
   );
 }

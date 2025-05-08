@@ -978,3 +978,32 @@ if (factsObj.length === 0) {
 
 > [!NOTE]
 > Not necessary to do an `if/else` above because in JS if there is a return then the rest of the code is not executed. We want to execute the remaining code in the FactsList component.
+
+### Uploading Facts to Supabase
+
+We need to make a few changes in the `handleSubmit` function within the `NewFactForm` component.
+
+We are currently only adding new facts to UI simply by updating the fact state (`setFactsObj((facts) => [newFact, ...facts])`). We need to also add the new fact to the Supabase database.
+
+1. Go to **API docs** on Supabase and click **facts** table. Here you will see a list of the different methods we can use to interact with the database.
+2. Scroll down to where it says **Insert rows**.
+3. Back in the app we go to the step where we check if the data is valid (Step #2 in `handleSubmit`). We no longer need to create the newFact object.
+4. We use the supabase client to select the **facts** table, but instead of `.select()` we will use `.insert()`. Within the insert we will pass in an array which contains the object we want to insert.
+5. Within the object we only need the `text`, `source`, and `category`. We do not need the rest of it, because the ID is created automatically by Supabase and the votes are set to 0 by default, and the createdIn date is set to the current date by default.
+6. We also now want to get the newly created object back. This is done by adding `.select()`.
+7. We need to `await` it, therefore we need to make the `handleSubmit` function `async`.
+8. Destruct data and error (`const { data, error } = await supabase ...`) from the insert method.
+9. We can rename the data newFact (`{ data: newFact }`).
+10. Test newFact by logging it to the console and temporarily remove the `setFactsObj` function. Add fact to the form and you will see the new array with one object in the console.
+11. Now if we want to get the new fact to the state then we want to get the first element of the array. We can do this by using `newFact[0]`. This causes the fact to be added to both the local state and the Supabase database. Without this we would have to re-fetch the data, which we don't want to do.
+
+We have a problem now that it could take some time for the fact to be added and we could click **POST** multiple times.
+
+It would also be nice to let the user know when a fact is currently being added.
+
+1. Create a new state variable called `isUploading`, setter function called `setIsUploading`, and set it to useState with a default value of false (`const [isUploading, setIsUploading] = useState(false);`).
+2. Before step 3 (upload fact to Supabase) we will set `setIsUploading` to true. We can now use that isUploading state variable.
+3. All form elements, including buttons can have the `disabled` attribute. They are disabled when the `isUploading` state value is set to true. We can do this by adding `disabled={isUploading}` to the form element. Add it to the button, two inputs, and select elements.
+4. We then need to set setIsUploading to false after the fact is added to the database. This will allow the user to click the button again and add another fact. This is set after supabase upload code in step 3.
+
+### Handle Votes and Fact Updating on Supabase
