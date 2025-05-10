@@ -100,10 +100,10 @@ function App() {
 
   return (
     <>
-      <Header show={showForm} ssFormObj={setShowForm} />
+      <Header showFormObj={showForm} ssFormObj={setShowForm} />
 
       {showForm ? (
-        <NewFactForm setFactsObj={setFacts} setShowFormObj={setShowForm} />
+        <NewFactForm setFactsObj={setFacts} ssFormObj={setShowForm} />
       ) : null}
       {/* <Counter /> */}
       {/* <NewFactForm /> */}
@@ -111,7 +111,11 @@ function App() {
       <main className="main">
         <CategoryFilter setCurrentCatObj={setCurrentCategory} />
 
-        {isLoading ? <Loader /> : <FactsList factsObj={facts} />}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FactsList factsObj={facts} setFactsObj={setFacts} />
+        )}
 
         {/* <FactsList factsObj={facts} /> */}
       </main>
@@ -311,8 +315,7 @@ function CategoryFilter({ setCurrentCatObj }) {
   );
 }
 
-// Could write props as parameter and within the function destructure it, but instead we will destructure it directly in the function parameter as factsObj.
-function FactsList({ factsObj }) {
+function FactsList({ factsObj, setFactsObj }) {
   // temporary variable. Only used until we have the real data from Supabase.
   // ? const facts = initialFacts;
   // ? const [facts, setFacts] = useState(initialFacts);
@@ -328,7 +331,7 @@ function FactsList({ factsObj }) {
     <section>
       <ul className="facts-list">
         {factsObj.map((fact) => (
-          <Fact key={fact.id} factObj={fact} />
+          <Fact key={fact.id} factObj={fact} setFactsObj={setFactsObj} />
         ))}
       </ul>
       <p>
@@ -341,13 +344,41 @@ function FactsList({ factsObj }) {
 
 // ? function Fact(props) {
 // We can also destructure the props directly in the function parameter.
-function Fact({ factObj }) {
+function Fact({ factObj, setFactsObj }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+
   // ? console.log(props);
 
   // Destructuring the props.
   // ? const { factObj } = props;
   // OR
   // ? const factObj = props.factObj;
+  async function handleVote(voteType) {
+    setIsUpdating(true);
+
+    const { data: updatedFact, error } = await supabase
+      .from("facts")
+      // ? .update({
+      //   ? votes_interesting: factObj.votes_interesting + 1,
+      // ? })
+      // ? .update({
+      //   ? ["votes_interesting"]: factObj["votes_interesting"] + 1,
+      // ? })
+      .update({
+        [voteType]: factObj[voteType] + 1,
+      })
+      .eq("id", factObj.id)
+      .select();
+
+    setIsUpdating(false);
+
+    // Test.
+    // ? console.log(updatedFact);
+    if (!error)
+      setFactsObj((facts) =>
+        facts.map((f) => (f.id === factObj.id ? updatedFact[0] : f))
+      );
+  }
 
   return (
     <li className="fact">
@@ -375,9 +406,24 @@ function Fact({ factObj }) {
         {factObj.category}
       </span>
       <div className="vote-buttons">
-        <button>👍 {factObj.votes_interesting}</button>
-        <button>🤯 {factObj.votes_mindblowing}</button>
-        <button>⛔️ {factObj.votes_false}</button>
+        {/* <button onClick={handleVote} disabled={isUpdating}>
+          👍 {factObj.votes_interesting}
+        </button> */}
+        <button
+          onClick={() => handleVote("votes_interesting")}
+          disabled={isUpdating}
+        >
+          👍 {factObj.votes_interesting}
+        </button>
+        <button
+          onClick={() => handleVote("votes_mindblowing")}
+          disabled={isUpdating}
+        >
+          🤯 {factObj.votes_mindblowing}
+        </button>
+        <button onClick={() => handleVote("votes_false")} disabled={isUpdating}>
+          ⛔️ {factObj.votes_false}
+        </button>
       </div>
     </li>
   );

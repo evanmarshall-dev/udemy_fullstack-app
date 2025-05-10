@@ -1005,5 +1005,75 @@ It would also be nice to let the user know when a fact is currently being added.
 2. Before step 3 (upload fact to Supabase) we will set `setIsUploading` to true. We can now use that isUploading state variable.
 3. All form elements, including buttons can have the `disabled` attribute. They are disabled when the `isUploading` state value is set to true. We can do this by adding `disabled={isUploading}` to the form element. Add it to the button, two inputs, and select elements.
 4. We then need to set setIsUploading to false after the fact is added to the database. This will allow the user to click the button again and add another fact. This is set after supabase upload code in step 3.
+5. Also make sure you only setFactsObj if there is no error. Update the step 4 code to this (`if (!error) setFactsObj((facts) => [newFact[0], ...facts]);`).
 
 ### Handle Votes and Fact Updating on Supabase
+
+We will handle the vote buttons within the `Fact` component.
+
+1. Create a new function within the `Fact` component called `handleVote`.
+2. In the vote button we will pass in the `handleVote` function to the `onClick` event handler.
+
+In a previous lecture for uploading facts we learned how to **insert** rows into the database and now we will go to the API docs and use the **update** rows functionality.
+
+Make sure you check _authentication_ > _policies_ to make sure you have the row level security (RLS) policies setup. Especially the insert and update policies.
+
+1. Add query inside handleVote function selecting facts table and the update method (`supabase.from('facts').update({})`).
+2. Within the code block have `votes_interesting` set to `factObj.votes_interesting + 1`. This will increment the number of votes by one.
+3. Tell supabase which fact to be updated by adding `.eq("id", factObj.id)`. We want to update the fact when is it equal to `factObj.id` (`.eq("id", factObj.id)`). So basically the current ID of the fact.
+4. We also want to **select** said fact so we can update the local fact state array (`.select()`).
+5. Add `await` before supabase and async to the parent function. Convert the await query into a variable with `data` and `error` destructured from it.
+6. Rename the data to `updatedFact` (`{ data: updatedFact }`).
+7. You can console log the updatedFact to see the new object created on button click.
+
+Update the local facts array in order to update the UI when a vote button is incremented by one on click. We will perform this function only if there is no error.
+
+If not an error then `setFactsObj` returns a new state to `fact`. Before when we want to add new item to array we would return the old array with spread operator and updated fact. This time we do not want to return a new array that is bigger than the previous one.
+
+We want to return a new array that is the same size as before. For example if we had 11 facts before the up vote we still want to have 11 facts after the vote. Therefore we will use the `map` method (Map creates a new array with the same length as before).
+
+1. Use `facts.map()` and call each of the facts `f`. With the map method for each array element we need to return the value that needs to be at the same position in the new array.
+2. If the ID of the current fact of the array is equal to the ID of the fact that we are updating then we want to return the updated fact and if not we will return the original fact (`(f) => (f.id === factObj.id ? updatedFact[0] : f)`).
+3. We need to pass in `setFactsObj` as a prop from the `App` component to the `Fact` component. We need to first pass it into the `FactsList` component and then into the `FactsList` component, and finally into the `Fact` component.
+
+For example:
+
+```javascript
+<FactsList factsObj={facts} setFactsObj={setFacts} />;
+
+// ...
+
+function FactsList({ factsObj, setFactsObj }) {}
+
+// ...
+```
+
+Now we want to create a state variable to disable the button while votes are being added or updated.
+
+1. To the Fact component we will add a new state variable called `isUpdating`, setter function called `setIsUpdating` and set it to `useState(false)` (`const [isUpdating, setIsUpdating] = useState(false);`).
+2. Before updating happens on the server (First line in `handleVote` function) we set `setIsUpdating` to true (`setIsUpdating(true);`).
+3. Then immediately after supabase `.update` query we set `setIsUpdating` to false. This will allow the button to be clicked again.
+4. Now we use the above code within `vote-buttons` buttons to disable the button while the vote is being updated. We do this by adding `disabled={isUpdating}` to the button element.
+5. Add style to the disabled button to make it more apparent.
+
+```css
+.main .fact .vote-buttons button:disabled {
+  background-color: oklch(0.37 0.0087 67.56);
+}
+```
+
+For the remaining buttons we will do the same thing. What we will change is the following line of code:
+
+```javascript
+.update({
+  votes_interesting: factObj.votes_interesting + 1,
+})
+```
+
+We could change it to `["votes_interesting"]: factObj["votes_interesting"] + 1` which is one way to access the property of an object.
+
+Now we can pass in a string to `handleVote` function to provide the above strings within square brackets dynamically.
+
+1. With the strings defined we go to the buttons and replace the `onClick` `handleVote` **call** with a **function definition** and then pass in `votes_interesting` as a string to `handleVote` function definition (`onClick={() => handleVote("votes_interesting")}`).
+2. Now add a parameter to the `handleVote` function called `voteType` and replace the string with the parameter (`[voteType]: factObj[voteType] + 1`).
+3. Now we simply generalize the functionality for the other two vote buttons (Copy and paste `onClick` and `disabled` code to the other two buttons) and update the string to `votes_mindblowing` and `votes_false`.

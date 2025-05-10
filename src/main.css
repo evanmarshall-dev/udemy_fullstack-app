@@ -1,24 +1,42 @@
+:root {
+  /* Colors */
+  --foreground-color: oklch(0.98 0.0013 106.42);
+  --background-color: oklch(0.27 0.0063 34.3);
+
+  /* Typography */
+  --base-font-family: "Sono";
+  --heading-font-family: "Coiny";
+
+  /* Spacing */
+  --base-padding: 1rem;
+
+  /* Alignment */
+  --centering: 0 auto;
+
+  /* Flexbox */
+  --base-gap: 1rem;
+}
+
 * {
   margin: 0;
   padding: 0;
+  border: none;
   box-sizing: border-box;
 }
 
 body {
-  background-color: oklch(0.27 0.0063 34.3);
-  color: oklch(0.98 0.0013 106.42);
-  font-family: "Sono", monospace;
+  /* background-color: oklch(0.27 0.0063 34.3); */
+  background-color: var(--background-color, brown);
+  /* color: oklch(0.98 0.0013 106.42); */
+  color: var(--foreground-color, white);
+  /* font-family: "Sono", monospace; */
+  font-family: var(--base-font-family, monospace);
   padding: 2rem 3rem;
 }
 
-@media (width >= 1000px) {
-  body {
-    padding: 3rem 4rem;
-  }
-}
-
 h1 {
-  font-family: "Coiny", system-ui;
+  /* font-family: "Coiny", system-ui; */
+  font-family: var(--heading-font-family, system-ui);
   font-size: 2.625rem;
   text-transform: uppercase;
   line-height: 1;
@@ -45,12 +63,14 @@ ul {
 /* Changed since the main div that wraps app is root. */
 #root {
   max-width: 1500px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  margin: var(--centering);
+  padding: 24px;
 }
 
 .btn {
-  border: none;
-  font-family: "Coiny", system-ui;
+  /* border: none; */
+  font-family: var(--heading-font-family, system-ui);
   line-height: 1;
   text-transform: uppercase;
   font-size: 1.063rem;
@@ -93,12 +113,15 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
+  gap: var(--base-gap, 1rem);
 }
 
 .header .logo {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  /* gap: 1rem; */
+  gap: var(--base-gap, 1rem);
 }
 
 .header .logo img {
@@ -109,11 +132,11 @@ ul {
 .fact-form {
   background-color: oklch(0.37 0.0087 67.56);
   margin-bottom: 2.5rem;
-  padding: 1rem 2rem;
+  padding: var(--base-padding, 1rem);
   /* text-align: center; */
   display: flex;
   align-items: stretch;
-  gap: 1rem;
+  gap: var(--base-gap, 1rem);
   border-radius: 1rem;
   flex-direction: column;
 }
@@ -126,7 +149,7 @@ ul {
 .fact-form select {
   width: auto;
   background-color: oklch(0.55 0.0116 58.07);
-  border: none;
+  /* border: none; */
   border-radius: 100px;
   padding: 1rem;
   font-size: 1.125rem;
@@ -138,36 +161,17 @@ ul {
   color: oklch(0.72 0.0091 56.26);
 }
 
-@media (width >= 1000px) {
-  .fact-form input,
-  .fact-form select {
-    width: 220px;
-  }
-}
-
 .fact-form span {
   font-weight: 600;
   font-size: 1.125rem;
   margin-right: 1.125rem;
 }
 
-@media (width >= 1000px) {
-  .fact-form {
-    flex-direction: row;
-    align-items: center;
-  }
-}
-
 .main {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 3rem;
-}
-
-@media (width >= 900px) {
-  .main {
-    grid-template-columns: 250px 1fr;
-  }
+  height: auto;
+  gap: calc(var(--base-gap, 1rem) * 3);
 }
 
 .main .category {
@@ -181,25 +185,17 @@ ul {
   /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
   background-color: oklch(0.37 0.0087 67.56);
   margin-bottom: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 12px 16px;
   display: flex;
   align-items: flex-end;
-  gap: 0.75rem;
+  gap: calc(var(--base-gap, 1rem) - 0.25rem);
   letter-spacing: -1px;
   border-radius: 1rem;
   flex-direction: column;
 }
 
-@media (width >= 1200px) {
-  .main .fact {
-    flex-direction: row;
-    gap: 1.5rem;
-    align-items: center;
-  }
-}
-
 .main .fact .tag {
-  font-family: "Coiny", system-ui;
+  font-family: var(--heading-font-family, system-ui);
   text-transform: uppercase;
   font-size: 0.875rem;
   padding: 0.188rem 0.625rem 0;
@@ -210,14 +206,14 @@ ul {
   /* A trick to provide margin needed to left to push content to the end of flexbox. */
   margin-left: auto;
   display: flex;
-  gap: 8px;
+  gap: calc(var(--base-gap, 1rem) - 0.5rem);
   /* Since this element is a flex item within the fact container we will set its flex shrink as 0 so that it will not get squished. */
   flex-shrink: 0;
 }
 
 .main .fact .vote-buttons button {
   background-color: oklch(0.55 0.0116 58.07);
-  border: none;
+  /* border: none; */
   font-size: 1.125rem;
   padding: 0.375rem 0.75rem;
   border-radius: 100px;
@@ -229,7 +225,13 @@ ul {
 }
 
 .main .fact .vote-buttons button:hover {
-  background-color: oklch(0.27 0.0063 34.3);
+  /* background-color: oklch(0.27 0.0063 34.3); */
+  background-color: var(--background-color);
+}
+
+/* Disabled button styling. */
+.main .fact .vote-buttons button:disabled {
+  background-color: oklch(0.37 0.0087 67.56);
 }
 
 /* Link targets any .source selector with href value. */
@@ -244,4 +246,51 @@ ul {
 .main .fact .source:hover,
 .main .fact .source:active {
   color: oklch(0.62 0.188 259.81);
+}
+
+/* Responsive */
+@media (width >= 600px) {
+  #root {
+    padding: unset;
+  }
+
+  .header {
+    flex-direction: row;
+    gap: unset;
+  }
+}
+
+@media (width >= 900px) {
+  .main {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+@media (width >= 1000px) {
+  body {
+    padding: 3rem 4rem;
+  }
+
+  .fact-form input,
+  .fact-form select {
+    width: 220px;
+  }
+
+  .fact-form {
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+
+  .main .fact {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (width >= 1200px) {
+  .main .fact {
+    flex-direction: row;
+    gap: calc(var(--base-gap, 1rem) + 0.5rem);
+    align-items: center;
+  }
 }
