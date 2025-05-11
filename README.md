@@ -1077,3 +1077,47 @@ Now we can pass in a string to `handleVote` function to provide the above string
 1. With the strings defined we go to the buttons and replace the `onClick` `handleVote` **call** with a **function definition** and then pass in `votes_interesting` as a string to `handleVote` function definition (`onClick={() => handleVote("votes_interesting")}`).
 2. Now add a parameter to the `handleVote` function called `voteType` and replace the string with the parameter (`[voteType]: factObj[voteType] + 1`).
 3. Now we simply generalize the functionality for the other two vote buttons (Copy and paste `onClick` and `disabled` code to the other two buttons) and update the string to `votes_mindblowing` and `votes_false`.
+
+## Deployment
+
+### Finishing Touches
+
+#### Adding Indicator for Fact Being Un-true
+
+1. In the `Fact` component return we will add an element to the paragraph element `factObj.text`. If `isDisputed` then let's place a `span` element with a class of `disputed`, text content of `[⛔️ DISPUTED]`, or else `null` (`{isDisputed ? <span>[⛔️ DISPUTED]</span> : null}`).
+2. Not necessary to create a state variable for isDisputed because it can be calculated from other data we already have (`const isDisputed = factObj.votes_interesting + factObj.votes_mindblowing < factObj.votes_false;`).
+3. Add styles for the disputed class in the CSS file. We will use a red color for the disputed text.
+
+```css
+.disputed {
+  color: oklch(0.64 0.2078 25.33);
+  font-weight: 600;
+  margin-right: 10px;
+}
+```
+
+#### Adding Styles to Only Allow Scroll on Facts List
+
+1. We need to define the container (`.main`) to have the height of the viewport (`height: 100vh;`).
+2. Now we need to go to the closest child of the `.main` element (The `section` after the `aside`) and set its style to `overflow: scroll`.
+3. Add `padding-bottom: 40px` to the section element.
+4. Calculate what the new height will be for the `.main` element. It will be `100vh` - header height, margin bottom on header, and padding on top of body.
+
+#### Miscellaneous
+
+1. In a real world app we would allow for more sorting options for facts.
+2. We would limit users to one vote per fact. This is done by allowing only one up vote per logged in user.
+3. Same as number 2 for being able to share one fact per user (This is called authentication).
+
+#### Create a Production Build
+
+We need to create a production build of the app. Currently we have the source files and all of the `node_modules` directory. A production build would bundle all node modules and optimize the code for performance.
+
+1. Run `pnpm build` to create a production build. This will create a new folder called `build` in the root directory.
+
+The `build` dir will have the index.html, css, javascript, bundled packages, and public files. This `build` folder is what we will upload to a server.
+
+### Deploy to Netlify
+
+1. Go to Netlify and create an account.
+2. Create a new site and select the `build` folder when uploading site manually.

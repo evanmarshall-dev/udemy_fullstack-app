@@ -179,9 +179,9 @@ function isValidHttpUrl(url) {
   return urlObj.protocol === "http:" || urlObj.protocol === "https:";
 }
 
-function NewFactForm({ setFactsObj, setShowFormObj }) {
+function NewFactForm({ setFactsObj, ssFormObj }) {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("https://www.example.com");
+  const [source, setSource] = useState("");
   const [category, setCategory] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const textLength = text.length;
@@ -242,7 +242,7 @@ function NewFactForm({ setFactsObj, setShowFormObj }) {
       setCategory("");
 
       // 6. Close the form.
-      setShowFormObj(false);
+      ssFormObj(false);
     }
   }
 
@@ -346,6 +346,8 @@ function FactsList({ factsObj, setFactsObj }) {
 // We can also destructure the props directly in the function parameter.
 function Fact({ factObj, setFactsObj }) {
   const [isUpdating, setIsUpdating] = useState(false);
+  const isDisputed =
+    factObj.votes_interesting + factObj.votes_mindblowing < factObj.votes_false;
 
   // ? console.log(props);
 
@@ -383,6 +385,8 @@ function Fact({ factObj, setFactsObj }) {
   return (
     <li className="fact">
       <p>
+        {isDisputed ? <span className="disputed">[⛔️ DISPUTED]</span> : null}
+
         {/* Do not need to include props because factObj destructure in the Fact component parameters. */}
         {/* {props.factObj.text} */}
         {factObj.text}

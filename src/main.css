@@ -31,7 +31,7 @@ body {
   color: var(--foreground-color, white);
   /* font-family: "Sono", monospace; */
   font-family: var(--base-font-family, monospace);
-  padding: 2rem 3rem;
+  padding: 2rem 3rem 0;
 }
 
 h1 {
@@ -58,6 +58,13 @@ ul {
   font-size: 32px;
   font-weight: 600;
   margin-top: 24px;
+}
+
+/* Styles for disputed fact toast. */
+.disputed {
+  color: oklch(0.64 0.2078 25.33);
+  font-weight: 600;
+  margin-right: 10px;
 }
 
 /* Changed since the main div that wraps app is root. */
@@ -172,6 +179,11 @@ ul {
   grid-template-columns: 1fr;
   height: auto;
   gap: calc(var(--base-gap, 1rem) * 3);
+
+  section {
+    overflow-y: hidden;
+    padding-bottom: unset;
+  }
 }
 
 .main .category {
@@ -263,12 +275,18 @@ ul {
 @media (width >= 900px) {
   .main {
     grid-template-columns: 250px 1fr;
+    height: calc(100vh - 68px - 40px - 32px);
+
+    section {
+      overflow-y: scroll;
+      padding-bottom: 40px;
+    }
   }
 }
 
 @media (width >= 1000px) {
   body {
-    padding: 3rem 4rem;
+    padding: 3rem 4rem 0;
   }
 
   .fact-form input,
@@ -280,6 +298,10 @@ ul {
     flex-direction: row;
     align-items: center;
     padding: 1rem 2rem;
+  }
+
+  .main {
+    height: calc(100vh - 68px - 40px - 48px);
   }
 
   .main .fact {
